@@ -24,4 +24,14 @@
         android:name="com.example.where_am_i_app.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.example.where_am_i_app.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" />
+    <fragment
+        android:id="@+id/alertsFragment"
+        android:name="com.example.where_am_i_app.AlertsFragment"
+        android:label="fragment_alerts"
+        tools:layout="@layout/fragment_alerts" />
 </navigation>

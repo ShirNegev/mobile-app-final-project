@@ -1,0 +1,17 @@
+package com.example.where_am_i_app.base
+
+import android.app.Application
+import android.content.Context
+
+class MyApplication: Application() {
+
+    object Globals {
+        var context: Context? = null
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        Globals.context = applicationContext
+    }
+}

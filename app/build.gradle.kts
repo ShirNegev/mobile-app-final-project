@@ -16,6 +16,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "ALERTS_BASE_URL", "\"${project.properties["ALERTS_BASE_URL"] ?: ""}\"")
     }
 
     buildTypes {
@@ -34,6 +36,10 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -49,4 +55,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.retrofit2.retrofit)
+    implementation(libs.gson)
+    implementation(libs.converter.gson)
 }

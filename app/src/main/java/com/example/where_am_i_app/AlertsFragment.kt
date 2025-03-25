@@ -5,35 +5,51 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.where_am_i_app.adapter.AlertsAdapter
+import com.example.where_am_i_app.databinding.FragmentAlertsBinding
+import com.example.where_am_i_app.model.Model
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AlertsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AlertsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var binding: FragmentAlertsBinding? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val viewModel: AlertsViewModel by viewModels()
+    private var adapter: AlertsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alerts, container, false)
+        binding = FragmentAlertsBinding.inflate(inflater, container, false)
+
+        binding?.recyclerView?.setHasFixedSize(true)
+        val layoutManager = LinearLayoutManager(context)
+        binding?.recyclerView?.layoutManager = layoutManager
+
+        adapter = AlertsAdapter(viewModel.alerts.value)
+        viewModel.alerts.observe(viewLifecycleOwner) {
+            adapter?.notifyDataSetChanged()
+            binding?.progressBar?.visibility = View.GONE
+        }
+        binding?.swipeToRefresh?.setOnRefreshListener {
+            viewModel.refreshAlerts()
+        }
+        Model.shared.loadingState.observe(viewLifecycleOwner) { state ->
+            binding?.swipeToRefresh?.isRefreshing = state == Model.LoadingState.LOADING
+        }
+        binding?.recyclerView?.adapter = adapter
+
+        return binding?.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshAlerts()
     }
 }

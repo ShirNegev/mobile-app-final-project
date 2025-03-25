@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.androidx.navigation.safeargs)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.google.services)
+    id("kotlin-kapt")
 }
 
 android {
@@ -43,17 +44,29 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.navigation.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.okhttp)
+    implementation(libs.androidx.swiperefreshlayout)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    testImplementation(libs.junit)
+    implementation(libs.androidx.navigation.ui )
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation(platform("com.google.firebase:firebase-bom:33.11.0"))
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.cloudinary.android)
+    implementation(libs.firebase.auth)
+
+    implementation(libs.google.gson)
+
+    kapt(libs.androidx.room.compiler)
+
+    testImplementation(libs.junit)
 }

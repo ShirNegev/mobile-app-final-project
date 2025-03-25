@@ -23,13 +23,18 @@ class SplashFragment : Fragment() {
 
         handler.postDelayed({
             checkAuthenticationStatus()
-        }, 3000)
+        }, 2500)
 
+        AuthManager.shared.signOut()
         return binding?.root
     }
 
     private fun checkAuthenticationStatus() {
-        // TODO: add AuthManager
+        if (AuthManager.shared.isSignedIn) {
+            Navigation.findNavController(requireView()).navigate(R.id.action_splashFragment_to_FeedFragment)
+        } else {
+            Navigation.findNavController(requireView()).navigate(R.id.action_splashFragment_to_loginFragment)
+        }
     }
 
     override fun onDestroyView() {

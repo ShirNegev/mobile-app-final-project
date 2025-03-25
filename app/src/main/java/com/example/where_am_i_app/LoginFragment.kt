@@ -24,12 +24,6 @@ class LoginFragment : Fragment() {
             return binding?.root
         }
 
-        setupClickListeners()
-
-        return binding?.root
-    }
-
-    private fun setupClickListeners() {
         binding?.loginLoginButton?.setOnClickListener {
             attemptLogin()
         }
@@ -37,6 +31,8 @@ class LoginFragment : Fragment() {
         binding?.loginRegisterText?.setOnClickListener {
             Navigation.findNavController(it).navigate(R.id.action_loginFragment_to_RegisterFragment)
         }
+
+        return binding?.root
     }
 
     private fun attemptLogin() {

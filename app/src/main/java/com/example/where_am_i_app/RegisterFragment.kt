@@ -1,5 +1,7 @@
 package com.example.where_am_i_app
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,16 +12,26 @@ import androidx.navigation.Navigation
 import com.example.where_am_i_app.databinding.FragmentRegisterBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import android.net.Uri
 
 class RegisterFragment : Fragment() {
     private var binding: FragmentRegisterBinding? = null
     private val db = Firebase.firestore
+    private var selectedImageUri: Uri? = null
+
+    // Image request code for gallery selection
+    private val PICK_IMAGE_REQUEST = 1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
+
+        // Set up click listener for the profile image to open the gallery
+        binding?.registerProfileImage?.setOnClickListener {
+            openGallery()
+        }
 
         binding?.registerButton?.setOnClickListener {
             attemptRegister()
@@ -30,6 +42,20 @@ class RegisterFragment : Fragment() {
         }
 
         return binding?.root
+    }
+
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+    }
+
+    // Handle the result from the gallery intent
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageUri = data.data
+            binding?.registerProfileImage?.setImageURI(selectedImageUri) // Set the selected image in the ImageView
+        }
     }
 
     private fun attemptRegister() {

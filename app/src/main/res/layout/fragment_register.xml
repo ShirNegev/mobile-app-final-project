@@ -74,6 +74,20 @@
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ImageView
+        android:id="@+id/register_profile_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="32dp"
+        android:clickable="true"
+        android:contentDescription="Profile Image"
+        android:focusable="true"
+        android:src="@drawable/common_full_open_on_phone"
+        app:layout_constraintBottom_toTopOf="@+id/register_name_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_title_text" />
+
     <Button
         android:id="@+id/register_button"
         android:layout_width="match_parent"

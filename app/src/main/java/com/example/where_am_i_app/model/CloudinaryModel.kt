@@ -1,6 +1,7 @@
 package com.example.where_am_i_app.model
 
 import android.graphics.Bitmap
+import android.util.Log
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
@@ -51,6 +52,7 @@ class CloudinaryModel {
                 }
 
                 override fun onError(requestId: String?, error: ErrorInfo?) {
+                    Log.e("TAG", "Error uploading image: ${error?.description}")
                     onError(error?.description ?: "Unknown error")
                 }
 

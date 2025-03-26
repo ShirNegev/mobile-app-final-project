@@ -3,6 +3,8 @@ package com.example.where_am_i_app.model
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.where_am_i_app.User
+import com.example.where_am_i_app.base.EmptyCallback
 import com.example.where_am_i_app.model.networking.AlertsClient
 import java.util.concurrent.Executors
 
@@ -17,6 +19,7 @@ class Model private constructor(){
     val alerts: MutableLiveData<List<Alert>> = MutableLiveData()
 
     private val cloudinaryModel = CloudinaryModel()
+    private val firebaseModel = FirebaseModel()
 
     companion object {
         val shared = Model()
@@ -46,17 +49,37 @@ class Model private constructor(){
         loadingState.postValue(LoadingState.LOADED)
     }
 
+    fun addUser(user: User, image: Bitmap?, callback: EmptyCallback) {
+        firebaseModel.addUser(user) {
+            Log.e("TAG", "Uploaded user to firebase. uploading image ${image}")
+            image?.let {
+                uploadImageToCloudinary(
+                    bitmap = image,
+                    name = user.id,
+                    callback = { uri ->
+                        if (!uri.isNullOrBlank()) {
+                            val st = user.copy(profileImageUrl = uri)
+                            firebaseModel.addUser(st, callback)
+                        } else {
+                            Log.e("TAG", "Image upload failed, no URL returned")
+                            callback()
+                        }
+                    },
+                )
+            } ?: callback()
+        }
+    }
+
     private fun uploadImageToCloudinary(
         bitmap: Bitmap,
         name: String,
-        onSuccess: (String?) -> Unit,
-        onError: (String?) -> Unit
+        callback: (String?) -> Unit
     ) {
         cloudinaryModel.uploadImage(
             bitmap = bitmap,
             name = name,
-            onSuccess = onSuccess,
-            onError = onError
+            onSuccess = callback,
+            onError = { callback(null) }
         )
     }
 }

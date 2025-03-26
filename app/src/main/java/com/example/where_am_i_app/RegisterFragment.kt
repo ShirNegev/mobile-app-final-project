@@ -2,6 +2,7 @@ package com.example.where_am_i_app
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,14 +11,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.where_am_i_app.databinding.FragmentRegisterBinding
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import android.net.Uri
 import com.example.where_am_i_app.model.AuthManager
+import com.example.where_am_i_app.model.Model
 
 class RegisterFragment : Fragment() {
     private var binding: FragmentRegisterBinding? = null
-    private val db = Firebase.firestore
     private var selectedImageUri: Uri? = null
 
     // Image request code for gallery selection
@@ -95,15 +94,23 @@ class RegisterFragment : Fragment() {
             profileImageUrl = ""
         )
 
-        db.collection("users").document(userId).set(user.toMap())
-            .addOnSuccessListener {
+        showLoading(true)
+
+        if (true) {
+            binding?.registerProfileImage?.isDrawingCacheEnabled = true
+            binding?.registerProfileImage?.buildDrawingCache()
+            val bitmap = (binding?.registerProfileImage?.drawable as BitmapDrawable).bitmap
+
+            Model.shared.addUser(user, bitmap) {
                 showLoading(false)
                 navigateToMainApp()
             }
-            .addOnFailureListener { e ->
+        } else {
+            Model.shared.addUser(user, null) {
                 showLoading(false)
-                Toast.makeText(context, "Error saving profile: ${e.message}", Toast.LENGTH_SHORT).show()
+                navigateToMainApp()
             }
+        }
     }
 
     private fun navigateToMainApp() {

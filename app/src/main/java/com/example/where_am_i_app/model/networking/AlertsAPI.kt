@@ -8,9 +8,7 @@ import retrofit2.http.Path
 
 interface AlertsAPI {
     @Headers("accept: application/json")
-    @GET("alerts-history/summary/custom/{startDate}/{endDate}")
+    @GET("earthquakes/feed/v1.0/summary/2.5_day.geojson")
     fun getAlerts(
-        @Path("startDate") startDate: String,
-        @Path("endDate") endDate: String
     ): Call<Alerts>
 }

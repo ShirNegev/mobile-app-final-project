@@ -1,5 +1,6 @@
 package com.example.where_am_i_app.adapter
 
+import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.where_am_i_app.databinding.AlertListRowBinding
@@ -13,39 +14,27 @@ class AlertViewHolder(
     ): RecyclerView.ViewHolder(binding.root) {
 
     private var alert: Alert? = null
-    private var dateTextView: TextView? = null
+    private var titleTextView: TextView? = null
     private var timeTextView: TextView? = null
-    private var citiesTextView: TextView? = null
+    private var typeTextView: TextView? = null
 
     init {
-        dateTextView = binding.tvDate
-        timeTextView = binding.tvTime
-        citiesTextView = binding.tvCities
+        titleTextView = binding.textViewTitle
+        timeTextView = binding.textviewTime
+        typeTextView = binding.textViewType
     }
 
     fun bind(alert: Alert?) {
+        Log.e("TAG", "Alert! ${alert}")
         this.alert = alert
-        dateTextView?.text = alert?.startTime?.let { getDateFromTimestamp(it) }
-        timeTextView?.text = alert?.startTime?.let { getTimeFromTimestamp(it) }
-        citiesTextView?.text = alert?.cities?.let { getShortCitiesString(it) }
+        titleTextView?.text = alert?.title
+        timeTextView?.text = alert?.time?.let { getDateFromTimestamp(it) }
+        typeTextView?.text = alert?.type
 
     }
 
     private fun getDateFromTimestamp(timestamp: Long): String {
-        val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy").withZone(ZoneId.systemDefault())
+        val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneId.systemDefault())
         return dateFormatter.format(Instant.ofEpochSecond(timestamp))
-    }
-
-    private fun getTimeFromTimestamp(timestamp: Long): String {
-        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault())
-        return timeFormatter.format(Instant.ofEpochSecond(timestamp))
-    }
-
-    private fun getShortCitiesString(cities: List<String>): String {
-        return if (cities.size > 3) {
-            cities.take(3).joinToString(", ") + "..."
-        } else {
-            cities.joinToString(", ")
-        }
     }
 }

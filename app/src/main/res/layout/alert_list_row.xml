@@ -22,40 +22,37 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/alert" />
 
-        <!-- Date Text -->
-
-        <!-- Time Text -->
         <TextView
-            android:id="@+id/tvDate"
+            android:id="@+id/textViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Date: 2025-03-23"
+            android:text="title"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/alertIcon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tvTime"
+            android:id="@+id/textviewTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time: 12:45"
+            android:text="time"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@id/tvDate"
-            app:layout_constraintTop_toBottomOf="@id/tvDate"
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@id/textViewTitle"
             android:layout_marginTop="4dp"/>
 
         <!-- Cities Text -->
         <TextView
-            android:id="@+id/tvCities"
+            android:id="@+id/textViewType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Cities: ראשון לציון, בת ים"
+            android:text="type"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@id/tvDate"
-            app:layout_constraintTop_toBottomOf="@id/tvTime" />
+            app:layout_constraintStart_toStartOf="@id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@id/textviewTime" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

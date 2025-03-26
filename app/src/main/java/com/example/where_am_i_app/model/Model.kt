@@ -28,11 +28,12 @@ class Model private constructor(){
                 val endDate = LocalDate.now() // Today
                 val startDate = endDate.minusDays(7) // 7 days ago
 
-                val request = AlertsClient.alertsApiClient.getAlerts(startDate.format(formatter), endDate.format(formatter))
+                val request = AlertsClient.alertsApiClient.getAlerts()
                 val response = request.execute()
 
                 if (response.isSuccessful) {
                     val alerts = response.body()
+                    Log.e("TAG", "Fetched alerts! ${alerts?.alerts?.get(0)}")
                     Log.e("TAG", "Fetched alerts!.. with total number of alerts ${alerts?.alerts?.size ?: 0}")
                     this.alerts.postValue(alerts)
                 } else {
@@ -43,5 +44,4 @@ class Model private constructor(){
             }
         }
     }
-
 }

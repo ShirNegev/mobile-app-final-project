@@ -1,6 +1,9 @@
 package com.example.where_am_i_app.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Alerts(
 
-    val alerts: List<Alert>,
+    @SerializedName("features")
+    val alerts: List<AlertProperties>,
 )

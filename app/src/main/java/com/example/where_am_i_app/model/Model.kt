@@ -70,7 +70,7 @@ class Model private constructor(){
         }
     }
 
-    private fun uploadImageToCloudinary(
+    fun uploadImageToCloudinary(
         bitmap: Bitmap,
         name: String,
         callback: (String?) -> Unit
@@ -81,5 +81,9 @@ class Model private constructor(){
             onSuccess = callback,
             onError = { callback(null) }
         )
+    }
+
+    fun getUserById(userId: String, callback: (User?) -> Unit, errorCallback: (String?) -> Unit) {
+        firebaseModel.getUserById(userId, callback, errorCallback)
     }
 }

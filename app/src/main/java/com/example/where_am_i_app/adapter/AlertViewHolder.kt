@@ -1,7 +1,9 @@
 package com.example.where_am_i_app.adapter
 
+import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.where_am_i_app.OnItemClickListener
 import com.example.where_am_i_app.databinding.AlertListRowBinding
 import com.example.where_am_i_app.model.Alert
 import java.time.Instant
@@ -9,7 +11,8 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class AlertViewHolder(
-    binding: AlertListRowBinding
+    binding: AlertListRowBinding,
+    listener: OnItemClickListener?
     ): RecyclerView.ViewHolder(binding.root) {
 
     private var alert: Alert? = null
@@ -21,6 +24,11 @@ class AlertViewHolder(
         titleTextView = binding.textViewTitle
         timeTextView = binding.textviewTime
         typeTextView = binding.textViewType
+
+        itemView.setOnClickListener {
+            Log.d("TAG", "On click listener on position $adapterPosition")
+            listener?.onItemClick(alert)
+        }
     }
 
     fun bind(alert: Alert?) {

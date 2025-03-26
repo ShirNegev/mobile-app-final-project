@@ -11,7 +11,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.where_am_i_app.model.Alert
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+interface OnItemClickListener {
+    fun onItemClick(alert: Alert?)
+}
 
 class MainActivity : AppCompatActivity() {
 

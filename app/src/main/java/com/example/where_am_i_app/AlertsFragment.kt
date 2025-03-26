@@ -32,6 +32,17 @@ class AlertsFragment : Fragment() {
         binding?.recyclerView?.layoutManager = LinearLayoutManager(context)
 
         adapter = AlertsAdapter(null)
+        adapter?.listener = object : OnItemClickListener {
+            override fun onItemClick(alert: Alert?) {
+                Log.e("TAG", "clicked alert ${alert?.title}")
+                alert?.let {
+                    val action = AlertsFragmentDirections.actionAlertsFragmentToAddUserAlertReportFragment(it.title)
+                    binding?.root?.let {
+                        Navigation.findNavController(it).navigate(action)
+                    }
+                }
+            }
+        }
         binding?.recyclerView?.adapter = adapter
 
         viewModel.alerts.observe(viewLifecycleOwner) {

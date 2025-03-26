@@ -43,7 +43,11 @@
         android:id="@+id/alertsFragment"
         android:name="com.example.where_am_i_app.AlertsFragment"
         android:label="fragment_alerts"
-        tools:layout="@layout/fragment_alerts" />
+        tools:layout="@layout/fragment_alerts" >
+        <action
+            android:id="@+id/action_alertsFragment_to_addUserAlertReportFragment"
+            app:destination="@id/addUserAlertReportFragment" />
+    </fragment>
     <fragment
         android:id="@+id/RegisterFragment"
         android:name="com.example.where_am_i_app.RegisterFragment"
@@ -52,5 +56,13 @@
         <action
             android:id="@+id/action_registerFragment_to_FeedFragment"
             app:destination="@id/feedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addUserAlertReportFragment"
+        android:name="com.example.where_am_i_app.AddUserAlertReportFragment"
+        android:label="AddUserAlertReportFragment" >
+    <argument
+        android:name="alertTitle"
+        app:argType="string" />
     </fragment>
 </navigation>

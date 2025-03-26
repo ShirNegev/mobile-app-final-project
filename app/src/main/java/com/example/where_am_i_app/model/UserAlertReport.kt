@@ -4,8 +4,7 @@ data class UserAlertReport(
     val userId: String,
     val text: String,
     val time: Long,
-    val location: String,
+    val geohashLocation: String,
     val alertTitle: String,
-    val alertTime: Long,
     val reportImageUrl: String = ""
 )

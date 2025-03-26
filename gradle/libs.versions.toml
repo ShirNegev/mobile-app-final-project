@@ -16,6 +16,7 @@ retrofitVersion = "2.11.0"
 swiperefreshlayout = "1.1.0"
 googleServices = "4.4.2"
 firebaseBom = "33.7.0"
+cloudinaryAndroid = "3.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,7 @@ retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref =
 firebase-auth = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
+cloudinary-android = { module = "com.cloudinary:cloudinary-android", version.ref = "cloudinaryAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

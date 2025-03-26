@@ -2,6 +2,7 @@ package com.example.where_am_i_app
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,28 +11,42 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
 import com.example.where_am_i_app.databinding.FragmentRegisterBinding
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import android.net.Uri
+import android.view.Menu
+import android.view.MenuInflater
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.where_am_i_app.model.AuthManager
+import com.example.where_am_i_app.model.Model
 
 class RegisterFragment : Fragment() {
     private var binding: FragmentRegisterBinding? = null
-    private val db = Firebase.firestore
-    private var selectedImageUri: Uri? = null
+    private var cameraLauncher: ActivityResultLauncher<Void?>? = null
+    private var didSetProfileImage = false
 
-    // Image request code for gallery selection
-    private val PICK_IMAGE_REQUEST = 1
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        binding = FragmentRegisterBinding.inflate(layoutInflater, container, false)
 
-        // Set up click listener for the profile image to open the gallery
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            binding?.registerProfileImage?.setImageBitmap(bitmap)
+            didSetProfileImage = true
+        }
+
         binding?.registerProfileImage?.setOnClickListener {
-            openGallery()
+            cameraLauncher?.launch(null)
         }
 
         binding?.registerButton?.setOnClickListener {
@@ -43,20 +58,6 @@ class RegisterFragment : Fragment() {
         }
 
         return binding?.root
-    }
-
-    private fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
-    }
-
-    // Handle the result from the gallery intent
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.data
-            binding?.registerProfileImage?.setImageURI(selectedImageUri) // Set the selected image in the ImageView
-        }
     }
 
     private fun attemptRegister() {
@@ -95,15 +96,21 @@ class RegisterFragment : Fragment() {
             profileImageUrl = ""
         )
 
-        db.collection("users").document(userId).set(user.toMap())
-            .addOnSuccessListener {
+        if (didSetProfileImage) {
+            binding?.registerProfileImage?.isDrawingCacheEnabled = true
+            binding?.registerProfileImage?.buildDrawingCache()
+            val bitmap = (binding?.registerProfileImage?.drawable as BitmapDrawable).bitmap
+
+            Model.shared.addUser(user, bitmap) {
                 showLoading(false)
                 navigateToMainApp()
             }
-            .addOnFailureListener { e ->
+        } else {
+            Model.shared.addUser(user, null) {
                 showLoading(false)
-                Toast.makeText(context, "Error saving profile: ${e.message}", Toast.LENGTH_SHORT).show()
+                navigateToMainApp()
             }
+        }
     }
 
     private fun navigateToMainApp() {

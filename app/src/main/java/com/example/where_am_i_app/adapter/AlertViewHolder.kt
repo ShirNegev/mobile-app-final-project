@@ -1,6 +1,5 @@
 package com.example.where_am_i_app.adapter
 
-import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.where_am_i_app.databinding.AlertListRowBinding
@@ -25,7 +24,6 @@ class AlertViewHolder(
     }
 
     fun bind(alert: Alert?) {
-        Log.e("TAG", "Alert! ${alert}")
         this.alert = alert
         titleTextView?.text = alert?.title
         timeTextView?.text = alert?.time?.let { getDateFromTimestamp(it) }

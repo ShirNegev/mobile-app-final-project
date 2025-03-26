@@ -35,6 +35,6 @@ class AlertViewHolder(
 
     private fun getDateFromTimestamp(timestamp: Long): String {
         val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneId.systemDefault())
-        return dateFormatter.format(Instant.ofEpochSecond(timestamp))
+        return dateFormatter.format(Instant.ofEpochSecond(timestamp / 1000))
     }
 }

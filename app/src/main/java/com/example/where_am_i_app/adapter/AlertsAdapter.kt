@@ -5,15 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.where_am_i_app.databinding.AlertListRowBinding
-import com.example.where_am_i_app.model.Alerts
+import com.example.where_am_i_app.model.Alert
 
 class AlertsAdapter(
-    var alerts: Alerts?
+    var alerts: List<Alert>?
 ): RecyclerView.Adapter<AlertViewHolder>() {
 
     override fun getItemCount(): Int {
-        Log.e("RecyclerView", "Item count: ${alerts?.alerts?.size ?: 0}")
-        return alerts?.alerts?.size ?: 0
+        Log.e("RecyclerView", "Item count: ${alerts?.size ?: 0}")
+        return alerts?.size ?: 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlertViewHolder {
@@ -23,14 +23,14 @@ class AlertsAdapter(
     }
 
     override fun onBindViewHolder(holder: AlertViewHolder, position: Int) {
-        Log.e("TAG", "Alert bindddd! ${alerts?.alerts?.get(position)}")
-        val alert = alerts?.alerts?.get(position)
-        holder.bind(alert?.properties)
+        Log.e("TAG", "Alert bindddd! ${alerts?.get(position)}")
+        val alert = alerts?.get(position)
+        holder.bind(alert)
     }
 
-    fun update(alerts: Alerts) {
+    fun update(alerts: List<Alert>) {
         this.alerts = alerts
         notifyDataSetChanged()
-        Log.e("TAG", "Alert updated! ${this.alerts?.alerts}")
+        Log.e("TAG", "Alert updated! ${this.alerts}")
     }
 }

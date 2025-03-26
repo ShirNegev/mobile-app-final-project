@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.where_am_i_app.adapter.AlertsAdapter
 import com.example.where_am_i_app.databinding.FragmentAlertsBinding
-import com.example.where_am_i_app.model.Alerts
 import com.example.where_am_i_app.model.Model
 
 class AlertsFragment : Fragment() {
@@ -18,7 +17,7 @@ class AlertsFragment : Fragment() {
     private val binding get() = _binding
 
     private val viewModel: AlertsViewModel by viewModels()
-    private var adapter: AlertsAdapter? = AlertsAdapter(Alerts(emptyList()))
+    private var adapter: AlertsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,14 +28,11 @@ class AlertsFragment : Fragment() {
         binding?.recyclerView?.setHasFixedSize(true)
         binding?.recyclerView?.layoutManager = LinearLayoutManager(context)
 
-        binding?.recyclerView?.adapter = null
+        adapter = AlertsAdapter(null)
         binding?.recyclerView?.adapter = adapter
 
         viewModel.alerts.observe(viewLifecycleOwner) {
-            Log.e("TAG", "adapter! ${adapter}")
-
             adapter?.update(it)
-            adapter?.notifyDataSetChanged()
             binding?.progressBar?.visibility = View.GONE
         }
         binding?.swipeToRefresh?.setOnRefreshListener {

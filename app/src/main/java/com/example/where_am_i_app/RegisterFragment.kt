@@ -2,6 +2,7 @@ package com.example.where_am_i_app
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.example.where_am_i_app.model.AuthManager
 import com.example.where_am_i_app.model.Model
 
@@ -23,6 +25,7 @@ class RegisterFragment : Fragment() {
     private var binding: FragmentRegisterBinding? = null
     private var cameraLauncher: ActivityResultLauncher<Void?>? = null
     private var didSetProfileImage = false
+    var previousBitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +43,7 @@ class RegisterFragment : Fragment() {
     ): View? {
         binding = FragmentRegisterBinding.inflate(layoutInflater, container, false)
 
-        cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            binding?.registerProfileImage?.setImageBitmap(bitmap)
-            didSetProfileImage = true
-        }
+        setupCameraLauncher()
 
         binding?.registerProfileImage?.setOnClickListener {
             cameraLauncher?.launch(null)
@@ -58,6 +58,21 @@ class RegisterFragment : Fragment() {
         }
 
         return binding?.root
+    }
+
+    private fun setupCameraLauncher() {
+        val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.profile)
+        previousBitmap = (drawable as BitmapDrawable).bitmap
+        cameraLauncher = registerForActivityResult((ActivityResultContracts.TakePicturePreview())) { bitmap ->
+            if (bitmap != null) {
+                previousBitmap = bitmap
+                binding?.registerProfileImage?.setImageBitmap(bitmap)
+                didSetProfileImage = true
+            } else {
+                binding?.registerProfileImage?.setImageBitmap(previousBitmap)
+                didSetProfileImage = true
+            }
+        }
     }
 
     private fun attemptRegister() {

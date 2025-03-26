@@ -33,7 +33,11 @@
         android:id="@+id/profileFragment"
         android:name="com.example.where_am_i_app.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_LoginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
     <fragment
         android:id="@+id/feedFragment"
         android:name="com.example.where_am_i_app.FeedFragment"

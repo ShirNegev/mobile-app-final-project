@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
-    <!-- User Image Section -->
     <ImageView
         android:id="@+id/profileImageView"
         android:layout_width="300dp"
@@ -20,9 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Change Image Text -->
-
-    <!-- User Name Text Section -->
     <TextView
         android:id="@+id/profileNameText"
         android:layout_width="wrap_content"
@@ -35,7 +31,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImageView" />
 
-    <!-- Change Name Text -->
     <TextView
         android:id="@+id/changeNameText"
         android:layout_width="wrap_content"
@@ -49,7 +44,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"/>
 
-    <!-- Logout Button -->
+    <EditText
+        android:id="@+id/editProfileNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textSize="34sp"
+        android:visibility="gone"
+        android:textColor="@android:color/black"
+        android:hint="Enter your name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeNameText" />
+
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
@@ -61,6 +69,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 

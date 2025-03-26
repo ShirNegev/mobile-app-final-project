@@ -44,7 +44,21 @@ class ProfileFragment : Fragment() {
         }
 
         binding?.changeNameText?.setOnClickListener {
+            if (binding?.editProfileNameText?.visibility == View.GONE) {
+                binding?.editProfileNameText?.setText(binding?.profileNameText?.text)
+                binding?.editProfileNameText?.visibility = View.VISIBLE
+                binding?.profileNameText?.visibility = View.GONE
+            } else {
+                val newName = binding?.editProfileNameText?.text?.toString() ?: ""
+                binding?.profileNameText?.text = newName
+                binding?.editProfileNameText?.visibility = View.GONE
+                binding?.profileNameText?.visibility = View.VISIBLE
 
+                val user = user?.copy(name = newName)
+                if (user != null) {
+                    Model.shared.addUser(user = user) {}
+                }
+            }
         }
 
         binding?.logoutButton?.setOnClickListener {

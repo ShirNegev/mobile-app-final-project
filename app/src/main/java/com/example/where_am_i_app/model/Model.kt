@@ -70,6 +70,10 @@ class Model private constructor(){
         }
     }
 
+    fun addUser(user: User, callback: EmptyCallback) {
+        firebaseModel.addUser(user) {}
+    }
+
     fun uploadImageToCloudinary(
         bitmap: Bitmap,
         name: String,

@@ -24,8 +24,7 @@ class SplashFragment : Fragment() {
         handler.postDelayed({
             checkAuthenticationStatus()
         }, 2500)
-
-        AuthManager.shared.signOut()
+        
         return binding?.root
     }
 

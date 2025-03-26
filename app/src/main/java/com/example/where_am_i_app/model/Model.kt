@@ -1,5 +1,6 @@
 package com.example.where_am_i_app.model
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.where_am_i_app.model.networking.AlertsClient
@@ -14,6 +15,8 @@ class Model private constructor(){
     private var executor = Executors.newSingleThreadExecutor()
     val loadingState: MutableLiveData<LoadingState> = MutableLiveData<LoadingState>()
     val alerts: MutableLiveData<List<Alert>> = MutableLiveData()
+
+    private val cloudinaryModel = CloudinaryModel()
 
     companion object {
         val shared = Model()
@@ -41,5 +44,19 @@ class Model private constructor(){
             }
         }
         loadingState.postValue(LoadingState.LOADED)
+    }
+
+    private fun uploadImageToCloudinary(
+        bitmap: Bitmap,
+        name: String,
+        onSuccess: (String?) -> Unit,
+        onError: (String?) -> Unit
+    ) {
+        cloudinaryModel.uploadImage(
+            bitmap = bitmap,
+            name = name,
+            onSuccess = onSuccess,
+            onError = onError
+        )
     }
 }

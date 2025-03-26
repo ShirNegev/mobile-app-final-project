@@ -2,6 +2,7 @@ package com.example.where_am_i_app.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.where_am_i_app.databinding.AlertListRowBinding
 import com.example.where_am_i_app.model.Alert
@@ -9,6 +10,8 @@ import com.example.where_am_i_app.model.Alert
 class AlertsAdapter(
     var alerts: List<Alert>?
 ): RecyclerView.Adapter<AlertViewHolder>() {
+
+    var listener: AdapterView.OnItemClickListener? = null
 
     override fun getItemCount(): Int =  alerts?.size ?: 0
 

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:gravity="center"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="548dp">
+
+            <!-- Alert Title -->
+            <TextView
+                android:id="@+id/textViewAlertTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Alert Title"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Alert Time -->
+            <TextView
+                android:id="@+id/textViewAlertTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Alert Time"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewAlertTitle" />
+
+            <!-- Uploaded Photo -->
+            <ImageView
+                android:id="@+id/imageViewPhoto"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/upload_image"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewAlertTime" />
+
+            <!-- Upload Photo Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonUploadPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Upload Photo"
+                app:icon="@drawable/upload_image"
+                app:iconPadding="8dp"
+                app:iconTint="?attr/colorOnPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageViewPhoto" />
+
+            <!-- Message Input -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/messageInputLayout"
+                android:layout_width="361dp"
+                android:layout_height="87dp"
+                android:layout_marginTop="16dp"
+                android:hint="Write a short message"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonUploadPhoto">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="82dp"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:minHeight="100dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Location Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAddLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Add Location"
+                app:icon="@android:drawable/ic_menu_mylocation"
+                app:iconPadding="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/messageInputLayout" />
+
+            <!-- Submit Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSubmitReport"
+                android:layout_width="358dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="164dp"
+                android:enabled="false"
+                android:text="Submit"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.476"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonAddLocation" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</ScrollView>

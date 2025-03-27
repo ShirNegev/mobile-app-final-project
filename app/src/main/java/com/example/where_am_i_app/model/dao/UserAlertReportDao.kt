@@ -14,7 +14,10 @@ interface UserAlertReportDao {
     @Query("SELECT * FROM UserAlertReport")
     fun getAllUserAlertReports(): LiveData<List<UserAlertReport>>
 
-    @Query("SELECT * FROM UserAlertReport WHERE id =:id")
+    @Query("SELECT * FROM UserAlertReport WHERE userId = :userId")
+    fun getUserAlertReportByUserIdLiveData(userId: String): LiveData<List<UserAlertReport>>
+
+    @Query("SELECT * FROM UserAlertReport WHERE id = :id")
     fun getUserAlertReportById(id: String): UserAlertReport
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -1,8 +1,8 @@
 package com.example.where_am_i_app.base
 
-import com.example.where_am_i_app.User
+import com.example.where_am_i_app.model.UserAlertReport
 
-typealias UsersCallback = (List<User>) -> Unit
+typealias UserAlertReportsCallback = (List<UserAlertReport>) -> Unit
 typealias EmptyCallback = () -> Unit
 
 object Constants {

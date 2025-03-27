@@ -5,6 +5,9 @@ import com.example.where_am_i_app.User
 import com.example.where_am_i_app.base.Constants.Collections.USERS
 import com.example.where_am_i_app.base.Constants.Collections.USER_ALERT_REPORTS
 import com.example.where_am_i_app.base.EmptyCallback
+import com.example.where_am_i_app.base.UserAlertReportsCallback
+import com.example.where_am_i_app.utils.toFirebaseTimestamp
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.memoryCacheSettings
@@ -45,28 +48,65 @@ class FirebaseModel {
             }
     }
 
-    fun addUserAlertReport(userAlertReport: UserAlertReport, callback: EmptyCallback) {
-        database.collection(USER_ALERT_REPORTS).document(userAlertReport.id).set(userAlertReport.toMap())
-            .addOnSuccessListener {
-                callback()
+    fun getAllUserAlertReports(sinceLastUpdated: Long, callback: UserAlertReportsCallback) {
+        database.collection(USER_ALERT_REPORTS)
+            .whereGreaterThanOrEqualTo(UserAlertReport.LAST_UPDATED, sinceLastUpdated.toFirebaseTimestamp)
+            .get()
+            .addOnCompleteListener {
+                when (it.isSuccessful) {
+                    true -> {
+                        val userAlertReports: MutableList<UserAlertReport> = mutableListOf()
+                        for (json in it.result) {
+                            userAlertReports.add(UserAlertReport.fromJSON(json.data))
+                        }
+
+                        callback(userAlertReports)
+                    }
+
+                    false -> callback(listOf())
+                }
             }
-            .addOnFailureListener { e -> Log.e("TAG", "failed to add user alert report") }
     }
 
-    fun getAllUserAlertReports(callback: (List<UserAlertReport>) -> Unit, onError: (String) -> Unit) {
-        database.collection(USER_ALERT_REPORTS)
-            .get()
-            .addOnSuccessListener { result ->
-                val userAlertReports = mutableListOf<UserAlertReport>()
-                for (document in result) {
-                    val userAlertReport = document.toObject(UserAlertReport::class.java)
-                    userAlertReports.add(userAlertReport)
+    fun getUserAlertReportsById(userAlertReportsId: String, callback: (UserAlertReport?) -> Unit) {
+        database.collection(USER_ALERT_REPORTS).document(userAlertReportsId).get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val document = task.result
+                    if (document != null && document.exists()) {
+                        val userAlertReports = UserAlertReport.fromJSON(document.data!!)
+                        callback(userAlertReports)
+                    } else {
+                        callback(null)
+                    }
+                } else {
+                    Log.e("TAG", "Error getting userAlertReport")
+                    callback(null)
                 }
-                callback(userAlertReports) // Pass the list of reports to the callback
             }
-            .addOnFailureListener { exception ->
-                Log.e("TAG", "Error getting documents: ", exception)
-                onError("Failed to fetch user alert reports")
+    }
+
+    fun addUserAlertReport(userAlertReport: UserAlertReport, callback: EmptyCallback) {
+        database.collection(USER_ALERT_REPORTS).document(userAlertReport.id).set(userAlertReport.json, SetOptions.merge())
+            .addOnCompleteListener {
+                callback()
+            }
+            .addOnFailureListener { e ->
+                Log.e("TAG", "failed to add user alert report")
+
+                callback()
+            }
+    }
+
+    fun deleteUserAlertReport(userAlertReport: UserAlertReport, callback: (Boolean) -> Unit) {
+        database.collection(USER_ALERT_REPORTS).document(userAlertReport.id).delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true)
+                } else {
+                    Log.e("TAG", "Error deleting userAlertReport")
+                    callback(false)
+                }
             }
     }
 

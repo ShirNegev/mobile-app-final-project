@@ -23,7 +23,7 @@ class SplashFragment : Fragment() {
 
         handler.postDelayed({
             checkAuthenticationStatus()
-        }, 2500)
+        }, 2000)
         
         return binding?.root
     }

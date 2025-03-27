@@ -1,7 +1,11 @@
 package com.example.where_am_i_app.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class UserAlertReport(
-    val id: String,
+    @PrimaryKey val id: String,
     val userId: String,
     val text: String,
     val time: Long,

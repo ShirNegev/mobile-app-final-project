@@ -3,6 +3,7 @@ package com.example.where_am_i_app.model
 import android.util.Log
 import com.example.where_am_i_app.User
 import com.example.where_am_i_app.base.Constants.Collections.USERS
+import com.example.where_am_i_app.base.Constants.Collections.USER_ALERT_REPORTS
 import com.example.where_am_i_app.base.EmptyCallback
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
@@ -42,5 +43,34 @@ class FirebaseModel {
             .addOnFailureListener { e ->
                 erorrCallback(e.message)
             }
+    }
+
+    fun addUserAlertReport(userAlertReport: UserAlertReport, callback: EmptyCallback) {
+        database.collection(USER_ALERT_REPORTS).document(userAlertReport.id).set(userAlertReport.toMap())
+            .addOnSuccessListener {
+                callback()
+            }
+            .addOnFailureListener { e -> Log.e("TAG", "failed to add user alert report") }
+    }
+
+    fun getAllUserAlertReports(callback: (List<UserAlertReport>) -> Unit, onError: (String) -> Unit) {
+        database.collection(USER_ALERT_REPORTS)
+            .get()
+            .addOnSuccessListener { result ->
+                val userAlertReports = mutableListOf<UserAlertReport>()
+                for (document in result) {
+                    val userAlertReport = document.toObject(UserAlertReport::class.java)
+                    userAlertReports.add(userAlertReport)
+                }
+                callback(userAlertReports) // Pass the list of reports to the callback
+            }
+            .addOnFailureListener { exception ->
+                Log.e("TAG", "Error getting documents: ", exception)
+                onError("Failed to fetch user alert reports")
+            }
+    }
+
+    fun generateNewAlertReportId(): String {
+        return database.collection(USER_ALERT_REPORTS).document().id
     }
 }

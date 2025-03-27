@@ -54,7 +54,7 @@ class RegisterFragment : Fragment() {
         }
 
         binding?.registerLoginText?.setOnClickListener {
-            Navigation.findNavController(it).popBackStack()
+            Navigation.findNavController(requireView()).navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
         return binding?.root

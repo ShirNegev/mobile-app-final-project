@@ -1,13 +1,14 @@
 package com.example.where_am_i_app.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.where_am_i_app.OnAlertClickListener
+import android.view.View
 import com.example.where_am_i_app.OnUserAlertReportClickListener
 import com.example.where_am_i_app.databinding.UserAlertReportListRowBinding
 import com.example.where_am_i_app.model.Model
 import com.example.where_am_i_app.model.UserAlertReport
 import com.squareup.picasso.Picasso
 import com.example.where_am_i_app.R
+import com.example.where_am_i_app.model.AuthManager
 import com.example.where_am_i_app.utils.getDateFromTimestamp
 
 class UserAlertReportViewHolder(
@@ -37,6 +38,11 @@ class UserAlertReportViewHolder(
         binding.textViewMessage.text = userAlertReport?.text
         binding.textViewTime.text = userAlertReport?.time?.let { getDateFromTimestamp(it) }
         binding.textViewLocation.text = userAlertReport?.geohashLocation ?: "no location detected"
+
+        if (userAlertReport?.userId != AuthManager.shared.userId) {
+            binding.buttonEdit.visibility = View.GONE
+            binding.buttonDelete.visibility = View.GONE
+        }
 
         userAlertReport?.reportImageUrl?.let {
             if (it.isNotBlank()) {

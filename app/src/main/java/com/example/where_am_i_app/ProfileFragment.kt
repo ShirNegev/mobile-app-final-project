@@ -74,7 +74,9 @@ class ProfileFragment : Fragment() {
                 previousBitmap = bitmap
                 binding?.profileImageView?.setImageBitmap(bitmap)
 
+                showLoading(true)
                 uploadProfilePicture(bitmap)
+                showLoading(false)
             } else {
                 binding?.profileImageView?.setImageBitmap(previousBitmap)
             }
@@ -94,6 +96,8 @@ class ProfileFragment : Fragment() {
     private fun fetchUserProfile() {
         val userId = AuthManager.shared.userId
 
+        showLoading(true)
+
         Model.shared.getUserById(userId,
             { fetchedUser ->
                 user = fetchedUser
@@ -108,18 +112,22 @@ class ProfileFragment : Fragment() {
                         .into(binding?.profileImageView, object : com.squareup.picasso.Callback {
                             override fun onSuccess() {
                                 Log.d("TAG", "Loaded profile image successfully")
+                                showLoading(false)
                             }
 
                             override fun onError(e: Exception?) {
                                 Log.e("TAG", "Loading profile image failed: ${e?.message}")
+                                showLoading(false)
                             }
                         })
                 } else {
                     binding?.profileImageView?.setImageResource(R.drawable.profile)
+                    showLoading(false)
                 }
             },
             { error ->
                 Toast.makeText(context, "Error loading profile: ${error}", Toast.LENGTH_SHORT).show()
+                showLoading(false)
             }
         )
     }
@@ -127,6 +135,10 @@ class ProfileFragment : Fragment() {
     private fun logout() {
         AuthManager.shared.signOut()
         Navigation.findNavController(requireView()).navigate(R.id.action_profileFragment_to_LoginFragment)
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding?.profileProgressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     override fun onDestroy() {

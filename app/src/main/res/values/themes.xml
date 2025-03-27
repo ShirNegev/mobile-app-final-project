@@ -9,6 +9,9 @@
 
     <style name="Theme.Whereamiapp.Light" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:forceDarkAllowed">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
     </style>
 
 </resources>

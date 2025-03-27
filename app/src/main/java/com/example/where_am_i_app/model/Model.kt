@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.where_am_i_app.User
+import com.example.where_am_i_app.base.Constants.Collections.USER_ALERT_REPORTS
 import com.example.where_am_i_app.base.EmptyCallback
 import com.example.where_am_i_app.model.networking.AlertsClient
 import java.util.concurrent.Executors
@@ -89,5 +90,34 @@ class Model private constructor(){
 
     fun getUserById(userId: String, callback: (User?) -> Unit, errorCallback: (String?) -> Unit) {
         firebaseModel.getUserById(userId, callback, errorCallback)
+    }
+
+    fun addUserAlertReport(userAlertReport: UserAlertReport, image: Bitmap?, callback: EmptyCallback) {
+        firebaseModel.addUserAlertReport(userAlertReport) {
+            Log.e("TAG", "Uploaded userAlertReport to firebase. uploading image ${image}")
+            image?.let {
+                uploadImageToCloudinary(
+                    bitmap = image,
+                    name = userAlertReport.id,
+                    callback = { uri ->
+                        if (!uri.isNullOrBlank()) {
+                            val userAlertReportToSave = userAlertReport.copy(reportImageUrl = uri)
+                            firebaseModel.addUserAlertReport(userAlertReportToSave, callback)
+                        } else {
+                            Log.e("TAG", "Image upload failed, no URL returned")
+                            callback()
+                        }
+                    },
+                )
+            } ?: callback()
+        }
+    }
+
+    fun addUserAlertReport(userAlertReport: UserAlertReport, callback: EmptyCallback) {
+        firebaseModel.addUserAlertReport(userAlertReport) {}
+    }
+
+    fun generateNewAlertReportId(): String {
+        return firebaseModel.generateNewAlertReportId()
     }
 }

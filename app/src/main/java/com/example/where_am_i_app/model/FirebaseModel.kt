@@ -69,4 +69,8 @@ class FirebaseModel {
                 onError("Failed to fetch user alert reports")
             }
     }
+
+    fun generateNewAlertReportId(): String {
+        return database.collection(USER_ALERT_REPORTS).document().id
+    }
 }

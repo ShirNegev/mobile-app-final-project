@@ -107,6 +107,8 @@ class ProfileFragment : Fragment() {
                 if (!user?.profileImageUrl.isNullOrEmpty()) {
                     Picasso.get()
                         .load(user?.profileImageUrl)
+                        .fit()
+                        .centerCrop()
                         .placeholder(R.drawable.profile)
                         .error(R.drawable.profile)
                         .into(binding?.profileImageView, object : com.squareup.picasso.Callback {

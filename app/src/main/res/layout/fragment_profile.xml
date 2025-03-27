@@ -15,6 +15,9 @@
         android:layout_marginEnd="100dp"
         android:clickable="true"
         android:src="@drawable/profile"
+        android:background="@drawable/rounded_image_background"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

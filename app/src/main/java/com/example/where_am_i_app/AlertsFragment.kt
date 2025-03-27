@@ -36,7 +36,7 @@ class AlertsFragment : Fragment() {
             override fun onItemClick(alert: Alert?) {
                 Log.e("TAG", "clicked alert ${alert?.title}")
                 alert?.let {
-                    val action = AlertsFragmentDirections.actionAlertsFragmentToAddUserAlertReportFragment(it.title)
+                    val action = AlertsFragmentDirections.actionAlertsFragmentToAddUserAlertReportFragment(it.title, null)
                     binding?.root?.let {
                         Navigation.findNavController(it).navigate(action)
                     }

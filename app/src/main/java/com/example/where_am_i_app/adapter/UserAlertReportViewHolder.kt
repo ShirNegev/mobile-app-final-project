@@ -1,5 +1,6 @@
 package com.example.where_am_i_app.adapter
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.example.where_am_i_app.OnUserAlertReportClickListener
@@ -46,8 +47,11 @@ class UserAlertReportViewHolder(
 
         userAlertReport?.reportImageUrl?.let {
             if (it.isNotBlank()) {
+                Log.e("image", "${it}")
                 Picasso.get()
                     .load(it)
+                    .fit()
+                    .centerCrop()
                     .placeholder(R.drawable.image_placeholder)
                     .into(binding.imageViewPhoto)
             }

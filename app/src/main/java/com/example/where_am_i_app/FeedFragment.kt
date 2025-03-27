@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.where_am_i_app.adapter.UserAlertReportAdapter
 import com.example.where_am_i_app.databinding.FragmentFeedBinding
@@ -33,7 +34,12 @@ class FeedFragment : Fragment() {
         adapter = UserAlertReportAdapter(null)
         adapter?.listener = object : OnUserAlertReportClickListener {
             override fun onEditClick(userAlertReport: UserAlertReport?) {
-               Toast.makeText(requireContext(), "alert ${userAlertReport?.text}", Toast.LENGTH_SHORT).show()
+                userAlertReport?.let {
+                    val action = FeedFragmentDirections.actionFeedFragmentToAddUserAlertReportFragment(null, it.id)
+                    binding?.root?.let {
+                        Navigation.findNavController(it).navigate(action)
+                    }
+                }
             }
 
             override fun onDeleteClick(userAlertReport: UserAlertReport?) {

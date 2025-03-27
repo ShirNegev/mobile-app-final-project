@@ -27,7 +27,6 @@ class Model private constructor(){
     val loadingState: MutableLiveData<LoadingState> = MutableLiveData<LoadingState>()
     val alerts: MutableLiveData<List<Alert>> = MutableLiveData()
     private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
-
     val userAlertReports: LiveData<List<UserAlertReport>> = database.userAlertReportDao().getAllUserAlertReports()
 
     companion object {

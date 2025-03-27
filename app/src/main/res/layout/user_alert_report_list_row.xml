@@ -38,6 +38,16 @@
                 app:tint="@color/black" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/textViewAlertTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rocket Attack Alert"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="4dp" />
+
         <!-- User Photo -->
         <ImageView
             android:id="@+id/imageViewPhoto"
@@ -83,9 +93,8 @@
                 android:id="@+id/textViewUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="John Doe"
-                android:textSize="14sp"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginStart="8dp"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <!-- Time Row -->

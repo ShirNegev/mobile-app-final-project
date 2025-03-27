@@ -47,19 +47,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"/>
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editProfileNameText"
-        android:layout_width="wrap_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:textSize="34sp"
+        app:boxBackgroundColor="@color/white"
+        android:hint="Enter your new name"
         android:visibility="gone"
-        android:textColor="@android:color/black"
-        android:hint="Enter your name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeNameText" />
+        app:layout_constraintTop_toBottomOf="@+id/changeNameText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editProfileNameTextText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/logoutButton"

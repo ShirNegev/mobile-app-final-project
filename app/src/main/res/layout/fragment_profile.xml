@@ -72,8 +72,8 @@
 
     <LinearLayout
         android:id="@+id/saveLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="255dp"
+        android:layout_height="40dp"
         android:orientation="horizontal"
         android:layout_marginTop="16dp"
         android:layout_margin="16dp"
@@ -98,10 +98,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Cancel"
-        android:background="@color/white"
+        android:background="@drawable/white_button"
+        app:backgroundTint="@null"
         android:textColor="@color/colorPrimary"
         android:visibility="gone"
-        app:backgroundTint="@null"
         android:layout_weight="1" />
 </LinearLayout>
 
@@ -124,7 +124,7 @@
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"

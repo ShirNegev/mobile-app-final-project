@@ -3,16 +3,14 @@ package com.example.where_am_i_app.adapter
 import android.util.Log
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.where_am_i_app.OnItemClickListener
+import com.example.where_am_i_app.OnAlertClickListener
 import com.example.where_am_i_app.databinding.AlertListRowBinding
 import com.example.where_am_i_app.model.Alert
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import com.example.where_am_i_app.utils.getDateFromTimestamp
 
 class AlertViewHolder(
     binding: AlertListRowBinding,
-    listener: OnItemClickListener?
+    listener: OnAlertClickListener?
     ): RecyclerView.ViewHolder(binding.root) {
 
     private var alert: Alert? = null
@@ -37,10 +35,5 @@ class AlertViewHolder(
         timeTextView?.text = alert?.time?.let { getDateFromTimestamp(it) }
         typeTextView?.text = alert?.type
 
-    }
-
-    private fun getDateFromTimestamp(timestamp: Long): String {
-        val dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss").withZone(ZoneId.systemDefault())
-        return dateFormatter.format(Instant.ofEpochSecond(timestamp / 1000))
     }
 }

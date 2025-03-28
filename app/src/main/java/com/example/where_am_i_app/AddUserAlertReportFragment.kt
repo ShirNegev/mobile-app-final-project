@@ -1,24 +1,31 @@
 package com.example.where_am_i_app
 
+import android.content.pm.PackageManager
 import android.graphics.drawable.BitmapDrawable
+import android.location.Geocoder
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.where_am_i_app.databinding.FragmentAddUserAlertReportBinding
 import com.example.where_am_i_app.model.AuthManager
 import com.example.where_am_i_app.model.Model
 import com.example.where_am_i_app.model.UserAlertReport
 import com.example.where_am_i_app.utils.getLocationFromGeoHash
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.squareup.picasso.Picasso
 import java.time.Instant
+import java.util.Locale
 
 class AddUserAlertReportFragment : Fragment() {
     private var binding: FragmentAddUserAlertReportBinding? = null
@@ -29,6 +36,8 @@ class AddUserAlertReportFragment : Fragment() {
     private var userAlertReport: UserAlertReport? = null
     private var geoHashLocation: String? = null
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = arguments?.let { AddUserAlertReportFragmentArgs.fromBundle(it).alertTitle }
@@ -36,6 +45,7 @@ class AddUserAlertReportFragment : Fragment() {
             arguments?.let { AddUserAlertReportFragmentArgs.fromBundle(it).userAlertReportId }
 
         setHasOptionsMenu(true)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -64,7 +74,6 @@ class AddUserAlertReportFragment : Fragment() {
 
         binding?.buttonCancelReport?.setOnClickListener(::onCancelClicked)
         binding?.buttonSubmitReport?.setOnClickListener(::onSaveClicked)
-        binding?.buttonAddLocation?.setOnClickListener(::onLocationClicked)
 
         cameraLauncher =
             registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
@@ -76,6 +85,10 @@ class AddUserAlertReportFragment : Fragment() {
 
         binding?.takePhotoButton?.setOnClickListener {
             cameraLauncher?.launch(null)
+        }
+
+        binding?.buttonAddLocation?.setOnClickListener {
+            getCurrentLocation()
         }
 
         return binding?.root
@@ -118,6 +131,58 @@ class AddUserAlertReportFragment : Fragment() {
         }
     }
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                getCurrentLocation()
+            } else {
+                Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                location?.let {
+                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                    val addresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
+
+                    if (!addresses.isNullOrEmpty()) {
+                        val textViewLocation = requireView().findViewById<TextView>(R.id.textViewLocation)
+                        val cityTextView = requireView().findViewById<TextView>(R.id.cityTextView)
+                        val countryTextView = requireView().findViewById<TextView>(R.id.countryTextView)
+                        val streetTextView = requireView().findViewById<TextView>(R.id.streetTextView)
+
+                        textViewLocation.visibility = View.GONE
+                        cityTextView.visibility = View.VISIBLE
+                        countryTextView.visibility = View.VISIBLE
+                        streetTextView.visibility = View.VISIBLE
+
+                        val address = addresses[0]
+
+                        cityTextView.text = address.locality ?: "Unknown City"
+                        countryTextView.text = address.countryName ?: "Unknown Country"
+                        streetTextView.text = address.thoroughfare ?: "Unknown Street"
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "Lat: ${it.latitude}, Lon: ${it.longitude}\nLocation details not found",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } ?: Toast.makeText(requireContext(), "Unable to get location", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Error getting location: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
     private fun showLoading(isLoading: Boolean) {
         binding?.addProgressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
@@ -145,13 +210,6 @@ class AddUserAlertReportFragment : Fragment() {
             binding?.textViewLocation?.text = "Location: no location detected"
             binding?.buttonAddLocation?.text = "Add Location"
         }
-    }
-
-    private fun onLocationClicked(view: View) {
-        //TODO: ROTEM
-        geoHashLocation = "";
-        binding?.textViewLocation?.text = "Location: ${getLocationFromGeoHash(geoHashLocation)}"
-        binding?.buttonAddLocation?.text = "Update Location"
     }
 
     private fun onCancelClicked(view: View) {

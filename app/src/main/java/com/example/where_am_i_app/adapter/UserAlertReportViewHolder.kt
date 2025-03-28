@@ -38,7 +38,17 @@ class UserAlertReportViewHolder(
         binding.textViewAlertTitle.text = userAlertReport?.alertTitle
         binding.textViewMessage.text = userAlertReport?.text
         binding.textViewTime.text = userAlertReport?.time?.let { getDateFromTimestamp(it) }
-        binding.textViewLocation.text = userAlertReport?.geohashLocation ?: "no location detected"
+        binding.textViewLocation.text = userAlertReport?.geohashLocation?.let {
+            if (it.isNullOrEmpty()) {
+                "no location detected"
+            } else {
+                it
+            }
+        }
+
+        // reset view visibility
+        binding.buttonEdit.visibility = View.VISIBLE
+        binding.buttonDelete.visibility = View.VISIBLE
 
         if (userAlertReport?.userId != AuthManager.shared.userId) {
             binding.buttonEdit.visibility = View.GONE
@@ -54,11 +64,14 @@ class UserAlertReportViewHolder(
                     .centerCrop()
                     .placeholder(R.drawable.image_placeholder)
                     .into(binding.imageViewPhoto)
+            } else {
+                binding.imageViewPhoto.setImageResource(R.drawable.image_placeholder)
             }
         }
 
         if (userAlertReport?.userId != null) {
-            Model.shared.getUserById(userId = userAlertReport.userId,
+            Model.shared.getUserById(
+                userId = userAlertReport.userId,
                 { user ->
                     binding.textViewUserName.text = user?.name
                 },

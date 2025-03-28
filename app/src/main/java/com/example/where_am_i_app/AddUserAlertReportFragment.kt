@@ -16,6 +16,7 @@ import com.example.where_am_i_app.databinding.FragmentAddUserAlertReportBinding
 import com.example.where_am_i_app.model.AuthManager
 import com.example.where_am_i_app.model.Model
 import com.example.where_am_i_app.model.UserAlertReport
+import com.example.where_am_i_app.utils.getLocationFromGeoHash
 import com.squareup.picasso.Picasso
 import java.time.Instant
 
@@ -26,6 +27,7 @@ class AddUserAlertReportFragment : Fragment() {
     private var title: String? = null
     private var userAlertReportId: String? = null
     private var userAlertReport: UserAlertReport? = null
+    private var geoHashLocation: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,16 +53,18 @@ class AddUserAlertReportFragment : Fragment() {
         } else {
             Model.shared.getUserAlertReportById(userAlertReportId!!) {
                 userAlertReport = it
+                geoHashLocation = it?.geohashLocation
                 binding?.textViewAlertTitle?.text = userAlertReport?.alertTitle
                 binding?.editTextMessage?.setText(userAlertReport?.text)
                 showReportImage()
+                showLocation()
             }
 
         }
 
         binding?.buttonCancelReport?.setOnClickListener(::onCancelClicked)
-
         binding?.buttonSubmitReport?.setOnClickListener(::onSaveClicked)
+        binding?.buttonAddLocation?.setOnClickListener(::onLocationClicked)
 
         cameraLauncher =
             registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
@@ -91,7 +95,7 @@ class AddUserAlertReportFragment : Fragment() {
             text = binding?.editTextMessage?.text.toString().trim(),
             time = userAlertReport?.time ?: Instant.now().toEpochMilli(),
             geohashLocation = "",
-            alertTitle = binding?.textViewAlertTitle?.text.toString().trim(),
+            alertTitle = binding?.textViewAlertTitle?.text.toString(),
             reportImageUrl = userAlertReport?.reportImageUrl ?: ""
         )
 
@@ -131,6 +135,23 @@ class AddUserAlertReportFragment : Fragment() {
             binding?.imageView?.setImageResource(R.drawable.image_placeholder)
             showLoading(false)
         }
+    }
+
+    private fun showLocation() {
+        if(!userAlertReport?.geohashLocation.isNullOrEmpty()) {
+            binding?.textViewLocation?.text = "Location: ${getLocationFromGeoHash(userAlertReport?.geohashLocation)}"
+            binding?.buttonAddLocation?.text = "Update Location"
+        } else {
+            binding?.textViewLocation?.text = "Location: no location detected"
+            binding?.buttonAddLocation?.text = "Add Location"
+        }
+    }
+
+    private fun onLocationClicked(view: View) {
+        //TODO: ROTEM
+        geoHashLocation = "";
+        binding?.textViewLocation?.text = "Location: ${getLocationFromGeoHash(geoHashLocation)}"
+        binding?.buttonAddLocation?.text = "Update Location"
     }
 
     private fun onCancelClicked(view: View) {

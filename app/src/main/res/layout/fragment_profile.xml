@@ -8,16 +8,16 @@
 
     <ImageView
         android:id="@+id/profileImageView"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="100dp"
-        android:clickable="true"
-        android:src="@drawable/profile"
         android:background="@drawable/rounded_image_background"
-        android:scaleType="centerCrop"
+        android:clickable="true"
         android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,10 +26,10 @@
         android:id="@+id/profileNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:textColor="@android:color/black"
-        android:textSize="34sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImageView" />
@@ -52,7 +52,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="255dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:boxBackgroundColor="@color/white"
         android:hint="Enter your new name"
         android:visibility="gone"
@@ -67,19 +67,37 @@
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeToRefreshProfileAlerts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/editProfileNameText"
+        app:layout_constraintBottom_toTopOf="@id/logoutButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <Button
         android:id="@+id/logoutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="20dp"
-        android:text="Logout"
         android:background="@drawable/gradient_button"
+        android:text="Logout"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swipeToRefreshProfileAlerts" />
 
     <ProgressBar
         android:id="@+id/profile_progress_bar"

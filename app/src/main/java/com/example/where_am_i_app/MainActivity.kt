@@ -12,10 +12,16 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.where_am_i_app.model.Alert
+import com.example.where_am_i_app.model.UserAlertReport
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-interface OnItemClickListener {
+interface OnAlertClickListener {
     fun onItemClick(alert: Alert?)
+}
+
+interface OnUserAlertReportClickListener {
+    fun onEditClick(userAlertReport: UserAlertReport?)
+    fun onDeleteClick(userAlertReport: UserAlertReport?)
 }
 
 class MainActivity : AppCompatActivity() {

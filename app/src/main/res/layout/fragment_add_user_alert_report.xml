@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp">
@@ -41,7 +42,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/takePhotoButton"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="38dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/gradient_button"
         android:text="Take a photo"
@@ -77,27 +78,44 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Location Button -->
+
+    <!-- Submit Button -->
+
+    <TextView
+        android:id="@+id/textViewLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="Location: no location detected"
+        android:textAlignment="center"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/messageInputLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonAddLocation"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/gradient_button"
         android:text="Add Location"
         app:backgroundTint="@null"
         app:icon="@android:drawable/ic_menu_mylocation"
         app:iconPadding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/messageInputLayout" />
+        app:layout_constraintTop_toBottomOf="@id/textViewLocation" />
 
-    <!-- Submit Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSubmitReport"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="4dp"
         android:background="@drawable/gradient_button"
         android:text="Submit"
         app:backgroundTint="@null"
@@ -105,8 +123,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddLocation"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddLocation"
+        app:layout_constraintVertical_bias="0.392" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonCancelReport"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/white_button"
+        app:backgroundTint="@null"
+        android:text="Cancel"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonSubmitReport"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
         android:id="@+id/add_progress_bar"

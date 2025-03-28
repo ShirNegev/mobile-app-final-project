@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,13 +29,14 @@ class AlertsFragment : Fragment() {
 
         binding?.recyclerView?.setHasFixedSize(true)
         binding?.recyclerView?.layoutManager = LinearLayoutManager(context)
+        binding?.progressBar?.visibility = View.VISIBLE
 
         adapter = AlertsAdapter(null)
-        adapter?.listener = object : OnItemClickListener {
+        adapter?.listener = object : OnAlertClickListener {
             override fun onItemClick(alert: Alert?) {
                 Log.e("TAG", "clicked alert ${alert?.title}")
                 alert?.let {
-                    val action = AlertsFragmentDirections.actionAlertsFragmentToAddUserAlertReportFragment(it.title)
+                    val action = AlertsFragmentDirections.actionAlertsFragmentToAddUserAlertReportFragment(it.title, null)
                     binding?.root?.let {
                         Navigation.findNavController(it).navigate(action)
                     }

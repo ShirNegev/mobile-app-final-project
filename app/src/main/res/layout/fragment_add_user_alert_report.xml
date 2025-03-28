@@ -110,9 +110,10 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonCancelReport"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_marginTop="15dp"
-        android:backgroundTint="@color/white"
+        android:background="@drawable/white_button"
+        app:backgroundTint="@null"
         android:text="Cancel"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"

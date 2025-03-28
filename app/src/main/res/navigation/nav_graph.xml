@@ -72,6 +72,12 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
+        android:id="@+id/alertsMapFragment"
+        android:name="com.example.where_am_i_app.AlertsMapFragment"
+        android:label="fragment_alerts_map"
+        tools:layout="@layout/fragment_alerts_map" >
+    </fragment>
+    <fragment
         android:id="@+id/RegisterFragment"
         android:name="com.example.where_am_i_app.RegisterFragment"
         android:label="fragment_register"

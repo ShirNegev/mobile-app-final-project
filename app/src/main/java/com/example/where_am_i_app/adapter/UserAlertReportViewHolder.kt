@@ -1,8 +1,11 @@
 package com.example.where_am_i_app.adapter
 
+import android.content.Context
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.core.content.ContentProviderCompat.requireContext
+import ch.hsr.geohash.GeoHash
 import com.example.where_am_i_app.OnUserAlertReportClickListener
 import com.example.where_am_i_app.databinding.UserAlertReportListRowBinding
 import com.example.where_am_i_app.model.Model
@@ -11,9 +14,11 @@ import com.squareup.picasso.Picasso
 import com.example.where_am_i_app.R
 import com.example.where_am_i_app.model.AuthManager
 import com.example.where_am_i_app.utils.getDateFromTimestamp
+import com.example.where_am_i_app.utils.getLocationFromGeoHash
 
 class UserAlertReportViewHolder(
     private val binding: UserAlertReportListRowBinding,
+    private val context: Context,
     listener: OnUserAlertReportClickListener?
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -39,11 +44,7 @@ class UserAlertReportViewHolder(
         binding.textViewMessage.text = userAlertReport?.text
         binding.textViewTime.text = userAlertReport?.time?.let { getDateFromTimestamp(it) }
         binding.textViewLocation.text = userAlertReport?.geohashLocation?.let {
-            if (it.isNullOrEmpty()) {
-                "no location detected"
-            } else {
-                it
-            }
+            getLocationFromGeoHash(it, context)
         }
 
         // reset view visibility

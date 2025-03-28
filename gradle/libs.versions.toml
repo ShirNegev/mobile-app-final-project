@@ -19,6 +19,11 @@ firebaseBom = "33.7.0"
 cloudinaryAndroid = "3.0.2"
 picasso = "2.8"
 roomRuntime = "2.6.1"
+osmdroid-android = "6.1.18"
+slf4j-api = "1.7.36"
+slf4j-nop = "1.7.36"
+playServicesLocation = "21.3.0"
+geohash = "1.4.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +51,12 @@ picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+
+osmdroid-android = { module = "org.osmdroid:osmdroid-android", version.ref = "osmdroid-android" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j-nop" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+geohash = { group = "ch.hsr", name = "geohash", version.ref = "geohash" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

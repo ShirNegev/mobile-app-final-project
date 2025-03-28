@@ -31,7 +31,7 @@ class FeedFragment : Fragment() {
         binding?.recyclerView?.layoutManager = LinearLayoutManager(context)
         binding?.progressBar?.visibility = View.VISIBLE
 
-        adapter = UserAlertReportAdapter(null)
+        adapter = UserAlertReportAdapter(userAlertReports = null, context = requireContext())
         adapter?.listener = object : OnUserAlertReportClickListener {
             override fun onEditClick(userAlertReport: UserAlertReport?) {
                 userAlertReport?.let {

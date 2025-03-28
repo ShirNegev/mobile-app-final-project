@@ -43,7 +43,7 @@ class ProfileFragment : Fragment() {
         binding?.recyclerView?.layoutManager = LinearLayoutManager(context)
         binding?.profileProgressBar?.visibility = View.VISIBLE
 
-        adapter = UserAlertReportAdapter(null)
+        adapter = UserAlertReportAdapter(null, requireContext())
         adapter?.listener = object : OnUserAlertReportClickListener {
             override fun onEditClick(userAlertReport: UserAlertReport?) {
                 userAlertReport?.let {

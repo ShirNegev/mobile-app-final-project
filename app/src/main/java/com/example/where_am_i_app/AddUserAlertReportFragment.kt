@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import ch.hsr.geohash.GeoHash
 import com.example.where_am_i_app.databinding.FragmentAddUserAlertReportBinding
 import com.example.where_am_i_app.model.AuthManager
 import com.example.where_am_i_app.model.Model
@@ -35,6 +36,8 @@ class AddUserAlertReportFragment : Fragment() {
     private var userAlertReportId: String? = null
     private var userAlertReport: UserAlertReport? = null
     private var geoHashLocation: String? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -69,7 +72,6 @@ class AddUserAlertReportFragment : Fragment() {
                 showReportImage()
                 showLocation()
             }
-
         }
 
         binding?.buttonCancelReport?.setOnClickListener(::onCancelClicked)
@@ -102,12 +104,21 @@ class AddUserAlertReportFragment : Fragment() {
             return
         }
 
+        // Generate GeoHash from stored latitude and longitude if available
+        geoHashLocation = if (latitude != null && longitude != null) {
+            val hash = GeoHash.withCharacterPrecision(latitude!!, longitude!!, 12).toBase32().toString()
+            println("Encoded GeoHash: $hash from Lat: $latitude, Lon: $longitude")
+            hash
+        } else {
+            geoHashLocation ?: ""
+        }
+
         val userAlertReport = UserAlertReport(
             id = userAlertReport?.id ?: Model.shared.generateNewAlertReportId(),
             userId = userId,
             text = binding?.editTextMessage?.text.toString().trim(),
             time = userAlertReport?.time ?: Instant.now().toEpochMilli(),
-            geohashLocation = geoHashLocation ?: "",
+            geohashLocation = geoHashLocation.toString(),
             alertTitle = binding?.textViewAlertTitle?.text.toString(),
             reportImageUrl = userAlertReport?.reportImageUrl ?: ""
         )
@@ -148,6 +159,9 @@ class AddUserAlertReportFragment : Fragment() {
         ) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
+                    latitude = it.latitude
+                    longitude = it.longitude
+
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
                     val addresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
 
@@ -203,11 +217,11 @@ class AddUserAlertReportFragment : Fragment() {
     }
 
     private fun showLocation() {
-        if(!userAlertReport?.geohashLocation.isNullOrEmpty()) {
-            binding?.textViewLocation?.text = "Location: ${getLocationFromGeoHash(userAlertReport?.geohashLocation)}"
+        if (!userAlertReport?.geohashLocation.isNullOrEmpty()) {
+            binding?.textViewLocation?.text = "Location: ${getLocationFromGeoHash(userAlertReport?.geohashLocation, requireContext())}"
             binding?.buttonAddLocation?.text = "Update Location"
         } else {
-            binding?.textViewLocation?.text = "Location: no location detected"
+            binding?.textViewLocation?.text = "No Location Added."
             binding?.buttonAddLocation?.text = "Add Location"
         }
     }

@@ -47,6 +47,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/profileFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_profileFragment_to_addUserAlertReportFragment"
+            app:destination="@id/addUserAlertReportFragment" />
     </fragment>
     <fragment
         android:id="@+id/feedFragment"

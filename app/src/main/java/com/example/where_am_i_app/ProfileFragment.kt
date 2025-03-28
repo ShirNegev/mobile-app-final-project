@@ -47,7 +47,7 @@ class ProfileFragment : Fragment() {
         adapter?.listener = object : OnUserAlertReportClickListener {
             override fun onEditClick(userAlertReport: UserAlertReport?) {
                 userAlertReport?.let {
-                    val action = FeedFragmentDirections.actionFeedFragmentToAddUserAlertReportFragment(null, it.id)
+                    val action = ProfileFragmentDirections.actionProfileFragmentToAddUserAlertReportFragment(null, it.id)
                     binding?.root?.let {
                         Navigation.findNavController(it).navigate(action)
                     }
@@ -89,24 +89,38 @@ class ProfileFragment : Fragment() {
             cameraLauncher?.launch(null)
         }
 
-        binding?.changeNameText?.setOnClickListener {
-            if (binding?.editProfileNameText?.visibility == View.GONE) {
-                binding?.editProfileNameTextText?.setText(binding?.profileNameText?.text)
-                binding?.editProfileNameText?.visibility = View.VISIBLE
-                binding?.profileNameText?.visibility = View.GONE
-            } else {
-                val newName = binding?.editProfileNameTextText?.text?.toString() ?: ""
-                if (newName != "") {
-                    binding?.profileNameText?.text = newName
-                    val user = user?.copy(name = newName)
-                    if (user != null) {
-                        Model.shared.addUser(user = user) {}
-                    }
-                }
+        binding?.editNameIcon?.setOnClickListener {
+            binding?.editProfileNameTextText?.setText(binding?.profileNameText?.text)
+            binding?.editProfileNameText?.visibility = View.VISIBLE
+            binding?.profileNameText?.visibility = View.GONE
+            binding?.editNameIcon?.visibility = View.GONE
+            binding?.saveNameButton?.visibility = View.VISIBLE
+            binding?.cancelNameButton?.visibility = View.VISIBLE
+        }
 
-                binding?.editProfileNameText?.visibility = View.GONE
-                binding?.profileNameText?.visibility = View.VISIBLE
+        binding?.saveNameButton?.setOnClickListener {
+            val newName = binding?.editProfileNameTextText?.text?.toString() ?: ""
+            if (newName != "") {
+                binding?.profileNameText?.text = newName
+                val user = user?.copy(name = newName)
+                if (user != null) {
+                    Model.shared.addUser(user = user) {}
+                }
             }
+
+            binding?.editProfileNameText?.visibility = View.GONE
+            binding?.profileNameText?.visibility = View.VISIBLE
+            binding?.editNameIcon?.visibility = View.VISIBLE
+            binding?.saveNameButton?.visibility = View.GONE
+            binding?.cancelNameButton?.visibility = View.GONE
+        }
+
+        binding?.cancelNameButton?.setOnClickListener {
+            binding?.editProfileNameText?.visibility = View.GONE
+            binding?.profileNameText?.visibility = View.VISIBLE
+            binding?.editNameIcon?.visibility = View.VISIBLE
+            binding?.saveNameButton?.visibility = View.GONE
+            binding?.cancelNameButton?.visibility = View.GONE
         }
 
         binding?.logoutButton?.setOnClickListener {

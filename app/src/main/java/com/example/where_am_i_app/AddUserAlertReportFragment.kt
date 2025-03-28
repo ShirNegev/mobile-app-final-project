@@ -94,7 +94,7 @@ class AddUserAlertReportFragment : Fragment() {
             userId = userId,
             text = binding?.editTextMessage?.text.toString().trim(),
             time = userAlertReport?.time ?: Instant.now().toEpochMilli(),
-            geohashLocation = "",
+            geohashLocation = geoHashLocation ?: "",
             alertTitle = binding?.textViewAlertTitle?.text.toString(),
             reportImageUrl = userAlertReport?.reportImageUrl ?: ""
         )

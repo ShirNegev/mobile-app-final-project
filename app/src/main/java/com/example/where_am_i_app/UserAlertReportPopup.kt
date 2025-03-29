@@ -5,29 +5,39 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.PopupWindow
 import androidx.core.graphics.drawable.toDrawable
+import androidx.fragment.app.viewModels
 import com.example.where_am_i_app.databinding.PopupUserAlertReportBinding
 import com.example.where_am_i_app.model.UserAlertReport
 import com.example.where_am_i_app.utils.getDateFromTimestamp
 import com.example.where_am_i_app.utils.getLocationFromGeoHash
 import com.squareup.picasso.Picasso
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 
 class UserAlertReportPopup(
     context: Context,
     private val mapView: MapView,
     report: UserAlertReport,
-    private val marker: Marker
+    viewModel: UserAlertReportsViewModel
 ) {
     private val binding: PopupUserAlertReportBinding =
         PopupUserAlertReportBinding.inflate(LayoutInflater.from(context))
     private val popupWindow: PopupWindow
 
     init {
-        binding.popupUserId.text = report.userId ?: "Unknown"
-        binding.popupMessage.text = report.text ?: "No message"
-        binding.popupTime.text = getDateFromTimestamp(report.time) ?: "Unknown time"
-        binding.popupLocation.text = getLocationFromGeoHash(report.geohashLocation, context) ?: "Unknown location"
+        binding.textViewAlertTitle.text = report.alertTitle
+        binding.popupMessage.text = report.text
+        binding.textViewTime.text = getDateFromTimestamp(report.time)
+        binding.textViewLocation.text = getLocationFromGeoHash(report.geohashLocation, context) ?: "Unknown location"
+
+        viewModel.getUserByUserId(
+            userId = report.userId,
+            { user ->
+                binding.textViewUserName.text = user?.name
+            },
+            {
+                binding.textViewUserName.text = ""
+            }
+        )
 
         // Load image if available
         report.reportImageUrl.let { url ->
@@ -42,17 +52,17 @@ class UserAlertReportPopup(
             } else {
                 binding.popupImage.setImageResource(R.drawable.image_placeholder)
             }
-        } ?: binding.popupImage.setImageResource(R.drawable.image_placeholder)
+        }
 
         binding.popupCloseButton.setOnClickListener {
             dismiss()
         }
 
-        val size = 1200
+        val size = 1000
         popupWindow = PopupWindow(
             binding.root,
             size,
-            size,
+            size + 500,
             true
         ).apply {
             setBackgroundDrawable(0x80000000.toInt().toDrawable())

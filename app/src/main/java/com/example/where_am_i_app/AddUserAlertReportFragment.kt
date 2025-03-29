@@ -166,21 +166,10 @@ class AddUserAlertReportFragment : Fragment() {
                     val addresses = geocoder.getFromLocation(it.latitude, it.longitude, 1)
 
                     if (!addresses.isNullOrEmpty()) {
-                        val textViewLocation = requireView().findViewById<TextView>(R.id.textViewLocation)
-                        val cityTextView = requireView().findViewById<TextView>(R.id.cityTextView)
-                        val countryTextView = requireView().findViewById<TextView>(R.id.countryTextView)
-                        val streetTextView = requireView().findViewById<TextView>(R.id.streetTextView)
-
-                        textViewLocation.visibility = View.GONE
-                        cityTextView.visibility = View.VISIBLE
-                        countryTextView.visibility = View.VISIBLE
-                        streetTextView.visibility = View.VISIBLE
-
                         val address = addresses[0]
 
-                        cityTextView.text = address.locality ?: "Unknown City"
-                        countryTextView.text = address.countryName ?: "Unknown Country"
-                        streetTextView.text = address.thoroughfare ?: "Unknown Street"
+                        binding?.textViewLocation?.text = "Location: ${address.thoroughfare ?: "Unknown Street"}, " +
+                                "${address.locality ?: "Unknown City"}, ${address.countryName ?: "Unknown Country"}"
                     } else {
                         Toast.makeText(
                             requireContext(),

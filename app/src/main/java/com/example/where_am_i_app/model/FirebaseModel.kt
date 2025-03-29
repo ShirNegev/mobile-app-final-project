@@ -7,6 +7,7 @@ import com.example.where_am_i_app.base.Constants.Collections.USER_ALERT_REPORTS
 import com.example.where_am_i_app.base.EmptyCallback
 import com.example.where_am_i_app.base.UserAlertReportsCallback
 import com.example.where_am_i_app.utils.toFirebaseTimestamp
+import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
@@ -112,5 +113,31 @@ class FirebaseModel {
 
     fun generateNewAlertReportId(): String {
         return database.collection(USER_ALERT_REPORTS).document().id
+    }
+
+    fun listenForUserAlertReportsChanges(callback: (List<UserAlertReport>, List<UserAlertReport>) -> Unit) {
+        database.collection(USER_ALERT_REPORTS)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    return@addSnapshotListener
+                }
+
+                val updatedUserAlertReports = mutableListOf<UserAlertReport>()
+                val deletedUserAlertReports = mutableListOf<UserAlertReport>()
+
+                snapshot?.documentChanges?.forEach { change ->
+                    val userAlertReport = UserAlertReport.fromJSON(change.document.data)
+                    when (change.type) {
+                        DocumentChange.Type.ADDED, DocumentChange.Type.MODIFIED -> {
+                            updatedUserAlertReports.add(userAlertReport)
+                        }
+                        DocumentChange.Type.REMOVED -> {
+                            deletedUserAlertReports.add(userAlertReport)
+                        }
+                    }
+                }
+
+                callback(updatedUserAlertReports, deletedUserAlertReports)
+            }
     }
 }

@@ -33,6 +33,10 @@ class Model private constructor(){
         val shared = Model()
     }
 
+    init {
+        listenForUserAlertReportsChanges()
+    }
+
     fun getAlerts() {
         loadingState.postValue(LoadingState.LOADING)
         executor.execute {
@@ -210,5 +214,19 @@ class Model private constructor(){
 
     fun generateNewAlertReportId(): String {
         return firebaseModel.generateNewAlertReportId()
+    }
+
+    private fun listenForUserAlertReportsChanges() {
+        firebaseModel.listenForUserAlertReportsChanges{ updatedUserAlertReports, deletedUserAlertReports ->
+            executor.execute {
+                // Insert or update User Alert Reports in Room
+                database.userAlertReportDao().insertAll(*updatedUserAlertReports.toTypedArray())
+
+                // Delete User Alert Reports from Room if they were removed in Firebase
+                deletedUserAlertReports.forEach { userAlertReport ->
+                    database.userAlertReportDao().delete(userAlertReport)
+                }
+            }
+        }
     }
 }

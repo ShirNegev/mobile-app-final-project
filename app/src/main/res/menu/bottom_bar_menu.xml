@@ -12,10 +12,10 @@
         android:title="Alerts" />
     <item
         android:id="@+id/alertsMapFragment"
-        android:icon="@android:drawable/ic_menu_mapmode"
+        android:icon="@drawable/map_icon"
         android:title="Map" />
     <item
         android:id="@+id/profileFragment"
-        android:icon="@drawable/person"
+        android:icon="@drawable/person_icon"
         android:title="Profile" />
 </menu>

@@ -29,4 +29,8 @@ class UserAlertReportsViewModel: ViewModel() {
             Model.shared.deleteUserAlertReport(userAlertReport, callBack)
         }
     }
+
+    fun getUserByUserId(userId: String, callBack: (User?) -> Unit, errorCallback: (String?) -> Unit) {
+        Model.shared.getUserById(userId, callBack, errorCallback)
+    }
 }

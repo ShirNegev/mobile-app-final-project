@@ -120,7 +120,7 @@ class AlertsMapFragment : Fragment() {
                         marker.position = GeoPoint(point.latitude, point.longitude)
                         marker.setOnMarkerClickListener { clickedMarker, _ ->
                             currentPopup?.dismiss()
-                            currentPopup = UserAlertReportPopup(requireContext(), mapView, report, clickedMarker)
+                            currentPopup = UserAlertReportPopup(requireContext(), mapView, report, viewModel)
                             true
                         }
                         mapView.overlays.add(marker)

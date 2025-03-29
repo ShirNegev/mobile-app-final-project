@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp">
@@ -37,6 +38,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewAlertTitle" />
 
+    <!-- Upload Photo Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/takePhotoButton"
         android:layout_width="wrap_content"
@@ -52,6 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView" />
 
+    <!-- Message Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/messageInputLayout"
         android:layout_width="0dp"
@@ -74,71 +77,9 @@
             android:minHeight="100dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonAddLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:background="@drawable/gradient_button"
-        android:text="Add Location"
-        app:backgroundTint="@null"
-        app:icon="@android:drawable/ic_menu_mylocation"
-        app:iconPadding="8dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/messageInputLayout" />
+    <!-- Location Button -->
 
-    <TextView
-        android:id="@+id/streetTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="Unknown Street"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/cityTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddLocation"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <TextView
-        android:id="@+id/cityTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="Unknown City"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/countryTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/streetTextView" />
-
-    <TextView
-        android:id="@+id/countryTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="Unknown Country"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/buttonSubmitReport"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cityTextView" />
+    <!-- Submit Button -->
 
     <TextView
         android:id="@+id/textViewLocation"
@@ -148,39 +89,58 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
-        android:text="No Location Added."
+        android:text="Location: no location detected"
         android:textAlignment="center"
         android:textColor="?android:textColorPrimary"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/buttonSubmitReport"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/messageInputLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddLocation" />
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonAddLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/gradient_button"
+        android:text="Add Location"
+        app:backgroundTint="@null"
+        app:icon="@android:drawable/ic_menu_mylocation"
+        app:iconPadding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewLocation" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonSubmitReport"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/gradient_button"
         android:text="Submit"
         app:backgroundTint="@null"
-        app:layout_constraintBottom_toTopOf="@id/buttonCancelReport"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddLocation"
+        app:layout_constraintVertical_bias="0.233" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonCancelReport"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/white_button"
         app:backgroundTint="@null"
         android:text="Cancel"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonSubmitReport"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
         android:id="@+id/add_progress_bar"
